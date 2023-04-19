@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include <Minesweeper.hpp>
+#include "Minesweeper.hpp"
 
 int main(int argc, char* argv[]) {
     
@@ -10,7 +10,7 @@ int main(int argc, char* argv[]) {
     std::string difficulty;
     std::cin >> difficulty;
     while (difficulty != "q") {
-        Minesweeper game(difficulty);
+       Minesweeper game(difficulty);
         game.print_board();
         game.place_mines();
         while (!game.game_win()) {

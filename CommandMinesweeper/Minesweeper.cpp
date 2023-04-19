@@ -1,5 +1,12 @@
 #include "Minesweeper.hpp"
+#include <algorithm>
 
+std::vector<std::string> valid_difficulties = {"Beginner", "Intermediate", "Expert"};
+std::map<std::string, std::vector<int> > difficulty_map = {
+    {"Beginner", {9, 9, 10}},
+    {"Intermediate", {16, 16, 40}},
+    {"Expert", {16, 30, 99}}
+};
 
 Minesweeper::Minesweeper(std::string difficulty) {
     if (std::find(valid_difficulties.begin(), valid_difficulties.end(), difficulty) == valid_difficulties.end()) {
