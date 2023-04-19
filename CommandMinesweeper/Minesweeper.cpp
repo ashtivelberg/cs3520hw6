@@ -34,7 +34,6 @@ void Minesweeper::place_mines() {
         int x = rand() % m_rows;
         int y = rand() % m_cols;
         if (m_board[x][y].is_mine()) {
-            mines_placed--;
             continue;
         }
         m_board[x][y].set_mine();
@@ -44,15 +43,13 @@ void Minesweeper::place_mines() {
 }
 
 void Minesweeper::update_neighbors(int x, int y) {
-    int adjacent_mines = 0;
     for (int i = -1; i <= 1; i++) {
         for (int j = -1; j <= 1; j++) {
             if (is_valid_move(x + i, y + j)) {
-                adjacent_mines++;
+                m_board[x + i][y + j].nearCount++;
             }
         }
     }
-    m_board[x][y].set_adjacent_mines(adjacent_mines);
 }
 
 bool Minesweeper::bfs() {
@@ -94,27 +91,31 @@ void Minesweeper::make_move(int x, int y) {
         return;
     }
     m_board[x][y].set_revealed();
-    // if (m_board[x][y].adjacent_mines() == 0) {
-    //     bfs();
-    // }
     bfs();
 }
 
 bool Minesweeper::game_win() {
+   int revealed = 0;
     for (int i = 0; i < m_rows; i++) {
-        for (int j = 0; j < m_cols; j++) {
-            if (!m_board[i][j].is_mine() && !m_board[i][j].is_revealed()) {
-                return false;
-            }
-        }
+         for (int j = 0; j < m_cols; j++) {
+              if (!m_board[i][j].is_revealed()) {
+                revealed++;
+              }
+         }
     }
-    return true;
+    return revealed == m_mines;
 }
 
 void Minesweeper::print_board() {
     std::cout << "  " ;
-    for(int j = 0; j < m_board[0].size(); j++) {
-        std::cout << j << "_";
+    for (int a = 0; a < m_board[0].size(); a++) {
+        std::cout << a << " ";
+    }
+    std::cout << std::endl;
+
+    std::cout << "  " ;
+    for (int a = 0; a < m_board[0].size(); a++) {
+        std::cout << "_ ";
     }
     std::cout << std::endl;
 
@@ -122,16 +123,15 @@ void Minesweeper::print_board() {
         std::cout << i << "|";
         for (int j = 0; j < m_cols; j++) {
             if (m_board[i][j].is_revealed()) {
-                if (m_board[i][j].adjacent_mines() == 0) {
+                if (m_board[i][j].nearCount == 0) {
                     std::cout << "_|";
                 } else {
-                    std::cout << m_board[i][j].adjacent_mines() << " | ";
+                    std::cout << m_board[i][j].nearCount << "|";
                 }
             } else {
-                std::cout << "X ";
+                std::cout << "■ ";
             }
         }
         std::cout << std::endl;
     }
 }
-

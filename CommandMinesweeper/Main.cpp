@@ -17,12 +17,25 @@ int main(int argc, char* argv[]) {
             int x, y;
             std::cout << "Enter x coordinate: ";
             std::cin >> x;
+            if (std::cin.fail()) {
+                break;
+            }
             std::cout << "Enter y coordinate: ";
             std::cin >> y;
-            game.make_move(x, y);
+            if (std::cin.fail()) {
+                break;
+            }
+            try {
+                game.make_move(x, y);
+            } catch (std::invalid_argument& e) {
+                std::cout << e.what() << std::endl;
+                break;
+            }
             game.print_board();
         }
-        std::cout << "You Win!" << std::endl;
+        if (game.game_win()) {
+            std::cout << "You Win!" << std::endl;
+        }
         // std::cout << "Select Difficulty: Beginner, Intermediate, Expert" << std::endl;
         // std::cout << "Press q to Quit" << std::endl;
         // std::cin >> difficulty;

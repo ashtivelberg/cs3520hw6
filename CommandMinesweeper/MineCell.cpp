@@ -1,8 +1,6 @@
 #include "MineCell.hpp"
 
-MineCell::MineCell(): c_is_mine(false), c_is_revealed(false), c_is_flagged(false), c_adjacent_mines(0) {}
-
-MineCell::MineCell(int x, int y): c_is_mine(false), c_is_revealed(false), c_is_flagged(false), c_adjacent_mines(0), c_x(x), c_y(y) {}
+MineCell::MineCell(int x, int y): c_is_mine(false), c_is_revealed(false), c_is_flagged(false), nearCount(0), c_x(x), c_y(y) {}
 
 bool MineCell::is_mine() {
     return c_is_mine;
@@ -25,16 +23,10 @@ void MineCell::set_mine() {
 }
 
 void MineCell::set_revealed() {
-    if (!c_is_flagged && !c_is_revealed) {
-        c_is_revealed = true;
-    }
+    c_is_revealed = true;
 }
 
 void MineCell::set_flagged() {
     c_is_flagged = true;
-}
-
-void MineCell::set_adjacent_mines(int adjacent_mines) {
-    c_adjacent_mines = adjacent_mines;
 }
 
